@@ -12,7 +12,7 @@ class InputHelper:
 		else:
 			#os.chdir('..')
 			f = open('day' + str(self.dayNr) + 'input.txt', 'r')
-			lines = f.readlines()
+			lines = [line.rstrip('\n') for line in f.readlines()]
 			f.close()
 
 		return lines
