@@ -5,7 +5,7 @@ def solve1(input):
     count_2s = 0
     count_3s = 0
 
-    for index, line in enumerate(input):
+    for line in input:
         count_2s = count_2s + count_dupes(line, 2)
         count_3s = count_3s + count_dupes(line, 3)
 
@@ -17,7 +17,7 @@ def checksum(input_text):
 def count_dupes(input_text, match):
     seen = dict()
 
-    for index, value in enumerate(list(input_text)):
+    for value in list(input_text):
         if value in seen:
             seen[value] = seen[value] + 1
         else:
@@ -30,16 +30,12 @@ def count_dupes(input_text, match):
     return 0
 
 def solve2(input):
-    matched = ''
-    (left, right) = find_matching_ids(input)
+    left, right = find_matching_ids(input)
 
-    right_values = list(right)
-
-    for index, left_value in enumerate(list(left)):
-        if left_value == right_values[index]:
-            matched += left_value
-
-    return (matched, left, right)
+    return ''.join([
+                left_value for left_value, right_value in zip(left, right)
+                    if left_value == right_value
+            ])
 
 def find_matching_ids(input):
     for index_outer, outer_id in enumerate(input):
