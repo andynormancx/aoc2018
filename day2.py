@@ -11,9 +11,6 @@ def solve1(input):
 
     return count_2s * count_3s
 
-def checksum(input_text):
-    return 0
-
 def count_dupes(input_text, match):
     seen = dict()
 
