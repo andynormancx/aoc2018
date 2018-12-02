@@ -23,7 +23,7 @@ def count_dupes(input_text, match):
         else:
             seen[value] = 1        
     
-    for key, value in seen.items():
+    for value in seen.values():
         if value == match:
             return 1
 
