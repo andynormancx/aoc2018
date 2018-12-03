@@ -3,35 +3,38 @@ import InputHelper as IH
 import regex as regex
 
 def solve1(input):
-    locations = set()
-    overlaps = set()
+    locations = dict()
+    overlaps = dict()
+    all_ids = set()
     count_overlaps = 0
-    count_squares = 0
-
-    max_x = 0
-    max_y = 0
 
     for line in input:
         (id, x, y, width, height) = line
-        max_x = max(max_x, x + width)
-        max_y = max(max_y, y + width)
+        all_ids.add(id)
 
         for col in range(x, x + width):
             for row in range(y, y + height):
-                count_squares += 1
                 key = str(col) + '_' + str(row)
-                if key in locations:
-                    if not(key) in overlaps:
+                if key in locations.keys():
+                    if not(key) in overlaps.keys():
                         count_overlaps += 1
-                        overlaps.add(key)
+                        overlaps[key] = set([id, locations[key]])
+                    else:
+                        ids = overlaps[key]
+                        ids.add(id)
+                        overlaps[key] = ids
                 else:
-                    locations.add(key)
+                    locations[key] = id
 
-    print(max_x)
-    print(max_y)
-    print(count_squares)
+    overlap_ids = set()
 
-    return count_overlaps
+    for key, overlap in overlaps.items():
+        for id in overlap:
+            overlap_ids.add(id)
+
+    non_overlaps = all_ids.difference(overlap_ids)
+
+    return (count_overlaps, non_overlaps.pop())
 
 def convert(lines):
     return [convert_line(line) for line in lines]
