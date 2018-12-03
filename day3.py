@@ -13,18 +13,17 @@ def solve1(input):
 
         for col in range(x, x + width):
             for row in range(y, y + height):
-                key = str(col) + '_' + str(row)
-                if key in locations.keys():
-                    if not(key) in overlaps.keys():
-                        overlaps[key] = set([id, locations[key]])
+                if (col, row) in locations:
+                    if not((col, row) in overlaps):
+                        overlaps[(col, row)] = set([id, locations[(col, row)]])
                     else:
-                        overlaps[key].add(id)
+                        overlaps[(col, row)].add(id)
                 else:
-                    locations[key] = id
+                    locations[(col, row)] = id
 
     overlap_ids = set()
 
-    for key, overlap in overlaps.items():
+    for _, overlap in overlaps.items():
         for id in overlap:
             overlap_ids.add(id)
 
