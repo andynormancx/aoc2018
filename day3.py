@@ -6,7 +6,6 @@ def solve1(input):
     locations = dict()
     overlaps = dict()
     all_ids = set()
-    count_overlaps = 0
 
     for line in input:
         (id, x, y, width, height) = line
@@ -17,12 +16,9 @@ def solve1(input):
                 key = str(col) + '_' + str(row)
                 if key in locations.keys():
                     if not(key) in overlaps.keys():
-                        count_overlaps += 1
                         overlaps[key] = set([id, locations[key]])
                     else:
-                        ids = overlaps[key]
-                        ids.add(id)
-                        overlaps[key] = ids
+                        overlaps[key].add(id)
                 else:
                     locations[key] = id
 
@@ -34,7 +30,7 @@ def solve1(input):
 
     non_overlaps = all_ids.difference(overlap_ids)
 
-    return (count_overlaps, non_overlaps.pop())
+    return (overlaps.__len__(), non_overlaps.pop())
 
 def convert(lines):
     return [convert_line(line) for line in lines]
