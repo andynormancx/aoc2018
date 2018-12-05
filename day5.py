@@ -61,9 +61,8 @@ test_data = [
 
 #print(10, solve1(list('dabAcCaCBAcCcaDA')))
 
-#print('Part 1/2 ', solve1(list(data[0])))
+print('Part 1 ', solve1(list(data[0])))
 
-print('Test')
 print('Part 2 ', solve2(list(data[0])))
 
 #print(4, solve2(list('dabAcCaCBAcCcaDA')))
