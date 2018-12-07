@@ -20,6 +20,48 @@ def solve1(input):
 
     return ''.join(finished_steps)
 
+def solve2(input, step_length, num_workers):
+    rules = defaultdict(list)
+    remaining_steps = set()
+    finished_steps = []
+
+    for rule in input:
+        remaining_steps.add(rule[0])
+        remaining_steps.add(rule[1])
+        rules[rule[1]].append(rule[0])
+
+    total_steps = len(remaining_steps)
+
+    second = 0
+    elves_available = num_workers
+    elves_working = []
+
+    while len(finished_steps) != total_steps:
+        next_working_elves = []
+
+        for elf in elves_working:
+            if elf[1] == 1:
+                finished_steps.append(elf[0])                
+                elves_available += 1
+            else:
+                next_working_elves.append((elf[0], elf[1] - 1)) # take a second off remaining time
+        
+        elves_working = next_working_elves
+
+        available_steps = get_available(rules, remaining_steps, finished_steps)
+
+        while len(available_steps) != 0 and elves_available != 0:
+            step = available_steps.pop()
+            remaining_steps.remove(step)
+            elves_working.append((step, step_length + ord(step) - 64))
+            elves_available -= 1
+
+        print(elves_working)
+
+        second += 1
+
+    return second - 1
+
 def get_available(rules, remaining_steps, finished_steps):
     available = []
 
@@ -62,12 +104,14 @@ test_data = [
     'Step F must be finished before step E can begin.'
 ]
 
-print(convert(test_data))
+#print(convert(test_data))
 
 #print(convert(data))
 
-print('CABDFE', solve1(convert(test_data)))
+#print('CABDFE', solve1(convert(test_data)))
 
-print('Part 1 ', solve1(convert(data)))
+#print('Part 1 ', solve1(convert(data)))
 
-#print('Part 2 ', solve2(convert(data)))
+print('15', solve2(convert(test_data), 0, 2))
+
+print('Part 2 ', solve2(convert(data), 60, 5))
