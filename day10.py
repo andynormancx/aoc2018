@@ -11,12 +11,12 @@ class Point:
         self.dy = dy
 
     def Move(self):
-        self.x = self.x + self.dx
-        self.y = self.y + self.dy
+        self.x += self.dx
+        self.y += self.dy
 
     def MoveBack(self):
-        self.x = self.x - self.dx
-        self.y = self.y - self.dy
+        self.x -= self.dx
+        self.y -= self.dy
 
 def solve1and2(points):
     lastYSpread = (max(points, key = lambda p: p.y)).y - (min(points, key = lambda p: p.y)).y
