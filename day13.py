@@ -14,6 +14,7 @@ class Cart():
             (0, 1),
             (-1, 0)
         ]
+        self.crashed = False
         self.next_turn = -1
 
     def move(self):
@@ -71,33 +72,22 @@ def solve1(map):
 def solve2(map):
     carts = find_carts(map)
 
-    second = 0
-    col = None
-
-    while True:
+    while len(carts) > 1:
         for cart in carts:
-            cart.move()
-            cart.set_dir(map)
+            if not cart.crashed:
+                cart.move()
+                cart.set_dir(map)
 
-        col = True
-        while col:
-            col = colision_check2(carts)
-            printed_tick = False
-            if col:
-                if not printed_tick:
-                    print()
-                    print(second)
-                    printed_tick = True
-                print('Collison at ', col[0].x, col[0].y)
-                carts.remove(col[0])
-                carts.remove(col[1])
-                removed = True
+            col = True
+            while col:
+                col = colision_check2(carts)
+                if col:
+                    col[0].crashed = True
+                    col[1].crashed = True
+                col = False
+        carts = list(filter(lambda x: not x.crashed, sorted(carts, key = lambda o: (o.y, o.x))))
 
-        if len(carts) == 1:
-            return carts[0].x, carts[0].y
-
-        second += 1
-    return col, second
+    return carts[0].x, carts[0].y
 
 def colision_check(carts):
     for outer_index, outer_cart in enumerate(carts):
@@ -110,7 +100,7 @@ def colision_check(carts):
 def colision_check2(carts):
     for outer_index, outer_cart in enumerate(carts):
         for inner_index, inner_cart in enumerate(carts):
-            if outer_index != inner_index and outer_cart.x == inner_cart.x and outer_cart.y == inner_cart.y:
+            if outer_index != inner_index and outer_cart.x == inner_cart.x and outer_cart.y == inner_cart.y and inner_cart.crashed != True and outer_cart.crashed != True:
                 return outer_cart, inner_cart
 
     return None
